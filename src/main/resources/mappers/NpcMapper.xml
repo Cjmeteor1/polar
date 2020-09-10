@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="NpcMapper">
+    <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+       resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+     -->
+    <select id="selectByID" resultType="com.alibaba.fastjson.JSONObject">
+        select * from polar.npc where npc_id = #{npc_id}
+   </select>
+
+    <select id="selectByTeamID" resultType="java.util.Map">
+        select * from polar.npc where team = #{team}
+   </select>
+
+    <select id="insert" resultType="java.lang.Integer">
+        insert into polar.npc(npc_id,type,surname,name,gender,age,birthday,hp,mp,ad,ap,speed,hpg,mpg,adg,apg,spg,lv,grade,
+        exp,team,current_hp,current_mp)
+        values
+        (#{npc_id},#{type},#{surname},#{name},#{gender},#{age},#{birthday},#{hp},#{mp},#{ad},#{ap},#{speed},#{hpg},#{mpg},#{adg},#{apg},#{spg},#{lv},#{grade},
+        #{exp},#{team},#{current_hp},#{current_mp})
+   </select>
+
+    <select id="update" resultType="java.lang.Integer">
+        update polar.npc set type = #{type},surname = #{surname},name = #{name},
+            gender = #{gender},age = #{age},birthday = #{birthday},hpg = #{hpg},mpg = #{mpg},
+            adg = #{adg},apg = #{apg},spg = #{spg},lv = #{lv}, grade = #{grade},
+            hp = #{hp},mp = #{mp},ad = #{ad},ap = #{ap}, speed = #{speed},exp = #{exp},team = #{team},
+            current_hp = #{current_hp},current_mp = #{current_mp}
+        where npc_id = #{npc_id}
+    </select>
+
+    <select id="deleteAllSkill" resultType="java.lang.Integer">
+        delete from polar.r_npc_skill where npc_id = #{npc_id}
+    </select>
+
+    <select id="saveAllSkill" parameterType="java.util.List" resultType="java.lang.Integer">
+        insert into polar.r_npc_skill (npc_id,skill_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.npc_id},#{item.skill_id})
+        </foreach>
+    </select>
+
+    <select id="queryAllSkill" resultType="com.alibaba.fastjson.JSONObject">
+        select * from  polar.r_npc_skill a left join polar.skill b
+        on a.skill_id = b.id
+        where npc_id = #{npc_id}
+    </select>
+
+    <select id="queryAllSkillList" resultType="com.alibaba.fastjson.JSONObject">
+        select * from polar.skill
+    </select>
+
+</mapper>

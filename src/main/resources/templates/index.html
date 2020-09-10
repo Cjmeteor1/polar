@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+</head>
+<style>
+    body{
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+    }
+</style>
+<body>
+
+<!--<button onclick="mainTest()">test</button>-->
+
+<!--<iframe id="main" name="main" src="" scrolling="no" style="height: 100%;width: 100%;"
+        frameborder="0"></iframe>-->
+<iframe src="" scrolling="no" height="100%" width="100%" frameborder="0"></iframe>
+
+</body>
+
+<script src="/class/npc.js"></script>
+<script src="/class/skill.js"></script>
+<script src="/class/game.js"></script>
+<script src="/class/websocket.js"></script>
+<script src="/class/util.js"></script>
+
+<script>
+
+    $(function () {
+        $("iframe").attr("src", '/page/game');
+    });
+
+    function mainTest() {
+        /*let npc1 = new Npc();
+        npc1.queryNpcById("748577190580453376");
+        let npc2 = new Npc();
+        npc2.queryNpcById("748577271786373120");
+
+        let npc3 = new Npc();
+        npc3.queryNpcById("748577176068161536");
+        let npc4 = new Npc();
+        npc4.queryNpcById("748577244619866112");
+
+        let game = new Game();
+        game.setTeam("teamA",[npc1,npc3]);
+        game.setTeam("teamB",[npc2,npc4]);
+        game.start();*/
+
+        let arr = Npc.create({
+            "num":1,
+            "weight":10
+        });
+        //arr[0].save();
+    }
+
+    function createGetterAndSetter2(attr) {
+        let attrArray = attr.split(",");
+
+        let str = "";
+        for (let i in attrArray) {
+            attrArray[i] = attrArray[i].replace(/[ ]/g, "").replace(/[\r\n]/g, "");
+            console.log(attrArray[i]);
+
+            str += "set" + attrArray[i].charAt(0).toUpperCase() +
+                attrArray[i].substring(1, attr.length) + "(para){ this." + attrArray[i] + " = para;};"
+
+            str += "get" + attrArray[i].charAt(0).toUpperCase() +
+                attrArray[i].substring(1, attr.length) + " (){ return this." + attrArray[i] + ";};"
+        }
+        return str;
+    }
+
+    function createGetterAndSetter(name, attr) {
+        let attrArray = attr.split(",");
+
+
+        let str = "";
+        for (let i in attrArray) {
+
+
+            attrArray[i] = attrArray[i].replace(/[ ]/g, "").replace(/[\r\n]/g, "");
+            console.log(attrArray[i]);
+
+            str += name + ".prototype.set" + attrArray[i].charAt(0).toUpperCase() +
+                attrArray[i].substring(1, attr.length) + " = function(para){ this." + attrArray[i] + " = para;};"
+
+            str += name + ".prototype.get" + attrArray[i].charAt(0).toUpperCase() +
+                attrArray[i].substring(1, attr.length) + " = function(){ return this." + attrArray[i] + ";};"
+        }
+        return str;
+    }
+
+    function creatFz(attr) {
+        let attrArray = attr.split(",");
+
+        let str = "";
+        for (let i in attrArray) {
+            attrArray[i] = attrArray[i].replace(/[ ]/g, "").replace(/[\r\n]/g, "");
+
+            str += "this." + attrArray[i] + " = data." + attrArray[i] + " ;"
+        }
+        return str;
+    }
+
+</script>
+
+
+
+</html>

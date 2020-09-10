@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+</head>
+<body>
+    登录页
+</body>
+
+<script>
+    $(function () {
+        $.ajax({
+            type: 'post',
+            url: "/getUserInfo",
+            data: {},
+            dataType: 'json',
+            contentType: "application/json;",
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
+        /*setTimeout(function () {
+            $.ajax({
+                type: 'post',
+                url: "/getUserInfoSelect",
+                data: JSON.stringify({userid:"1001"}),
+                dataType: 'json',
+                contentType: "application/json;",
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        },5000)*/
+    })
+</script>
+</html>

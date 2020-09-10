@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+</head>
+<style>
+    body{
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+    ::-webkit-scrollbar{display: none;}
+    .npc{
+        width: 10vw;
+        min-width: 180px;
+        //height: 10vh;
+        height: 55px;
+        border-radius: 4px;
+        box-shadow:3px 3px 3px 3px bisque;
+        margin: 0 auto 20px auto;
+    }
+    .npc-body{
+        text-align: center;
+        height: calc(100% - 52px);
+    }
+    .progress{
+        height: 16px;
+        width: 100%;
+        background-color: #e6d3d3;
+        margin-bottom: 1px;
+    }
+    .buff-line{
+        height: 25px;
+        display: flex;
+    }
+    .buff{
+        width: 25px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 20px;
+    }
+    .buff-name{
+        height: 14px;
+    }
+    .buff-value{
+        z-index: 2;
+        height: 6px;
+        float: right;
+        position: relative;
+        bottom: 12px;
+        right: 0;
+        font-size: 12px;
+        color: brown;
+    }
+    .progress_bar{
+        height: 100%;
+        width: 100%;
+    }
+
+    .progress_value{
+        position: relative;
+        top: -16px;
+        line-height: 16px;
+        font-size: 12px;
+        text-align: center;
+    }
+    
+    .red{
+        background-color: red;
+    }
+    .aqua{
+        background-color: aqua;
+    }
+
+    #battlefield{
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        width: 100%;
+    }
+
+    .team{
+        height: 60%;
+        width: 50%;
+        align-items: center;
+    }
+    #battle_msg{
+        width: 100%;
+        height: 40%;
+        background-color: #dddddd;
+        overflow-y: scroll;
+    }
+
+</style>
+<body>
+
+
+<button onclick="create()">test1</button>
+<button onclick="test2()">test2</button>
+<button onclick="test3()">test3</button>
+
+<div id="battlefield">
+    <div class="team" id="team_a">
+
+<!--        <div class="npc">
+            <div class="npc-body">
+                name
+            </div>
+            <div class="buff-line">
+                &lt;!&ndash;<div class="buff">
+                    <span class="buff-name">甲</span>
+                    <span class="buff-value">10</span>
+                </div>
+                <div class="buff">
+                    <span class="buff-name">毒</span>
+                    <span class="buff-value">133</span>
+                </div>&ndash;&gt;
+            </div>
+            <div class="progress">
+                <div class="progress_bar red"></div>
+                <div class="progress_value">100/100</div>
+            </div>
+            <div class="progress">
+                <div class="progress_bar aqua"></div>
+                <div class="progress_value">100/100</div>
+            </div>
+        </div>
+
+        <div class="npc">
+            <div class="npc-body">
+                name
+            </div>
+            <div class="buff-line">
+                &lt;!&ndash;<div class="buff">
+                    <span class="buff-name">甲</span>
+                    <span class="buff-value">10</span>
+                </div>
+                <div class="buff">
+                    <span class="buff-name">毒</span>
+                    <span class="buff-value">133</span>
+                </div>&ndash;&gt;
+            </div>
+            <div class="progress">
+                <div class="progress_bar red"></div>
+                <div class="progress_value">100/100</div>
+            </div>
+            <div class="progress">
+                <div class="progress_bar aqua"></div>
+                <div class="progress_value">100/100</div>
+            </div>
+        </div>-->
+
+    </div>
+    <div class="team" id="team_b">
+
+    </div>
+    <div id="battle_msg">
+
+    </div>
+</div>
+
+
+
+</body>
+
+<script src="/class/npc.js"></script>
+<script src="/class/skill.js"></script>
+<script src="/class/game.js"></script>
+<script src="/class/game.ui.js"></script>
+<script src="/class/util.js"></script>
+
+<script>
+
+    let queryNpc;
+    function create() {
+        /*let arr = Npc.create({
+            "num":1,
+            "weight":10
+        });
+
+        //arr[0].save();
+        GameUI.addTeamMember("team_a",arr[0]);*/
+
+        let game = new Game();
+        game.setTeam("teamA",Npc.create({"num":2, "weight":10}));
+        game.setTeam("teamB",Npc.create({"num":2, "weight":10}));
+        game.start();
+    }
+
+    function test2() {
+        queryNpc = Npc.queryNpcById("753214565503860736");
+        GameUI.addTeamMember("team_a",queryNpc);
+    }
+    function test3() {
+        GameUI.removeTeamMember("team_a",queryNpc);
+    }
+</script>
+</html>
