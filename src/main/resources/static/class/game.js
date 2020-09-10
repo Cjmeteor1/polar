@@ -18,10 +18,10 @@ function Game() {
             $.each(target, function (i, val) {
                 let real = val.setDamage(damage);
                 GameUI.log(from.getName() + "使用" + skill.getName() + "对" + val.getName() + "造成" + real + "点伤害");
-
                 //is d
                 if (!val.isAlive()) {
                     GameUI.removeTeamMember(val);
+                    GameUI.log(this.name+"阵亡!");
                 }
             })
         },
@@ -116,6 +116,9 @@ Game.prototype.selector = {
 
 Game.prototype.nextRound = function () {
     this.round++;
+    GameUI.log("回合"+this.round);
+    this.aliveMember = this.getAliveNumber("all");
+
     let member = this.teamA.concat(this.teamB);
     let skill, target_a, target_b;
 
@@ -134,6 +137,7 @@ Game.prototype.nextRound = function () {
         this.enqueue(member[i], skill, target_a, target_b);
     }
 };
+
 
 Game.prototype.start = function () {
     this.nextRound();
@@ -168,15 +172,6 @@ Game.prototype.enqueue = async function (npc, skill, target_a, target_b) {
 
     //执行
     await this.executeAction(arr);
-    /*for (let m = 0; m < arr.length; m++) {
-        if (!arr[m].npc.isAlive()) {
-            continue;
-        }
-        //Util.sleep(1000);
-        this.useSkill(arr[m].npc, arr[m].skill, this.selector.replaceSelector(this, arr[m].target_a),
-            this.selector.replaceSelector(this, arr[m].target_b))
-    }*/
-
 
     //判断
     if (this.getAliveNumber("teamA") === 0) {
@@ -186,49 +181,47 @@ Game.prototype.enqueue = async function (npc, skill, target_a, target_b) {
         console.log("teamA");
         this.winner = "teamA";
     } else {
-        this.aliveMember = this.getAliveNumber("all");
-
-        //this.nextRound();
-        setTimeout(function () {currentGame.nextRound();},1000);
+        Timer.enqueue(function () {
+            currentGame.nextRound();
+        },100);
     }
 };
 
-
-Game.prototype.executeActionOne = function (arr,m) {
-    if(arr.length < m+1){
-        return;
-    }
-
-    this.useSkill(arr[m].npc, arr[m].skill, this.selector.replaceSelector(this, arr[m].target_a),
-        this.selector.replaceSelector(this, arr[m].target_b));
-
-    if(arr.length > m+1){
-        setTimeout(function () {
-            currentGame.executeActionOne(arr,m+1);
-        },1000);
-    }
-};
-
-Game.prototype.executeAction = function (arr) {
+/*Game.prototype.executeAction = function (arr) {
+    console.log(arr);
     let i = 0;
     let t;
-    t = setInterval(executeActionOne, 1000);
+    t = setInterval(executeActionOne, 500);
 
     function executeActionOne() {
-        i++;
+        console.log(i+";"+arr.length);
         if(i >= arr.length) {
+            console.log("clear");
             clearInterval(t);
             return;
         }
 
         if (!arr[i].npc.isAlive()) {
-            console.log(1243);
+            i++;
+            executeActionOne();
             return;
         }
-        //Util.sleep(1000);
-        currentGame.useSkill(arr[i-1].npc, arr[i-1].skill, currentGame.selector.replaceSelector(currentGame, arr[i-1].target_a),
-            currentGame.selector.replaceSelector(currentGame, arr[i-1].target_b));
+        currentGame.useSkill(arr[i].npc, arr[i].skill, currentGame.selector.replaceSelector(currentGame, arr[i].target_a),
+            currentGame.selector.replaceSelector(currentGame, arr[i].target_b));
+        i++;
+    }
+};*/
 
+
+Game.prototype.executeAction = function (arr) {
+    for(let i =0;i< arr.length;i++){
+        if(!arr[i].npc.isAlive()){
+            continue;
+        }
+        Timer.enqueue(function () {
+            currentGame.useSkill(arr[i].npc, arr[i].skill, currentGame.selector.replaceSelector(currentGame, arr[i].target_a),
+                currentGame.selector.replaceSelector(currentGame, arr[i].target_b));
+        },1000);
     }
 };
 
@@ -251,12 +244,18 @@ Game.prototype.getAliveNumber = function (name) {
 };
 
 Game.prototype.useSkill = function (npc, skill, target_a, target_b) {
+    if(!npc.isAlive()){
+        return;
+    }
+
     if (target_a.length < 1 && target_b.length < 1) {
         return;
     }
     let runable = skill.getRunable();
     let mp = skill.getSkillMp();
+
     eval(runable);
+
     npc.setCurrent_mp(npc.getCurrent_mp() - mp);
     GameUI.setProgress(npc);
 };

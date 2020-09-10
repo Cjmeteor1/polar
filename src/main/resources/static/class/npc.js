@@ -33,7 +33,6 @@ Npc.prototype.setDamage = function (n) {
     if (this.current_hp < 0){
         damage = n+this.current_hp;
         this.current_hp =0;
-        GameUI.log(this.name+"阵亡!")
     }
     GameUI.setProgress(this);
     return damage;
