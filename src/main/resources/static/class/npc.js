@@ -63,6 +63,24 @@ Npc.queryNpcById = function (id) {
     return npc;
 };
 
+Npc.queryTeam = function (user_id) {
+    let team = [];
+    let npc;
+
+    let res = callService("NpcService", "queryTeam", user_id);
+    if(!res.success){return;}
+    let data = JSON.parse(res.data);
+
+    for(let row of data){
+        npc = new Npc();
+        npc.setAll(row);
+        npc.setSkills(JSON.parse(row.skills));
+        team.push(npc);
+    }
+
+    return team;
+};
+
 Npc.prototype.save = function () {
     callService("NpcService", "updateOrInsertNpc", JSON.stringify(this));
 };

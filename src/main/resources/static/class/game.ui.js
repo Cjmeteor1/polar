@@ -1,6 +1,4 @@
-function GameUI() {
-
-}
+function GameUI() {}
 
 GameUI.number = {
     team_a: 0,
@@ -64,6 +62,9 @@ GameUI.log = function (msg) {
     $("#battle_msg").append("<div>"+msg+"</div>");
 };
 
+function MainUI() {
+
+}
 
 
 

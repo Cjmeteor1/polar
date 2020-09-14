@@ -64,4 +64,12 @@ public class NpcService {
         }
         return data.toJSONString();
     }
+
+    public String queryTeam(String id){
+        List<JSONObject> team = npcMapper.selectByTeamID(id);
+        for(JSONObject npc:team){
+            npc.put("skills",queryAllSkill(npc.getString("npc_id")));
+        }
+        return JSON.toJSONString(team);
+    }
 }

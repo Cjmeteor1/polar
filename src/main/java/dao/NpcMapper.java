@@ -65,6 +65,10 @@ public class NpcMapper {
         sqlSession.commit();
     }
 
+    public List<JSONObject> selectByTeamID(String id){
+        return sqlSession.selectList("NpcMapper.selectByTeamID",id);
+    }
+
 
     /*public NPC selectOne(String id){
         return sqlSession.selectOne("NpcMapper.selectByID", id);

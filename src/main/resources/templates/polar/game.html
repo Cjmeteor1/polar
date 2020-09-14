@@ -199,7 +199,41 @@
         GameUI.addTeamMember("team_a",queryNpc);
     }
     function test3() {
-        GameUI.removeTeamMember("team_a",queryNpc);
+        //GameUI.removeTeamMember("team_a",queryNpc);
+
+        createGetterAndSetter("Knapsack","item_id,type,name,grade,xx,owner,runable");
+        creatFz("item_id,type,name,grade,xx,owner,runable");
+    }
+
+    function createGetterAndSetter(name, attr) {
+        let attrArray = attr.split(",");
+
+        let str = "";
+        for (let i in attrArray) {
+            attrArray[i] = attrArray[i].replace(/[ ]/g, "").replace(/[\r\n]/g, "");
+            console.log(attrArray[i]);
+
+            str += name + ".prototype.set" + attrArray[i].charAt(0).toUpperCase() +
+                attrArray[i].substring(1, attr.length) + " = function(para){ this." + attrArray[i] + " = para;};"
+
+            str += name + ".prototype.get" + attrArray[i].charAt(0).toUpperCase() +
+                attrArray[i].substring(1, attr.length) + " = function(){ return this." + attrArray[i] + ";};"
+        }
+        console.log(str);
+        return str;
+    }
+
+    function creatFz(attr) {
+        let attrArray = attr.split(",");
+
+        let str = "";
+        for (let i in attrArray) {
+            attrArray[i] = attrArray[i].replace(/[ ]/g, "").replace(/[\r\n]/g, "");
+
+            str += "this." + attrArray[i] + " = data." + attrArray[i] + " ;"
+        }
+        console.log(str);
+        return str;
     }
 </script>
 </html>
